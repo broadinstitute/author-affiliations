@@ -1,0 +1,5 @@
+broad	Broad Institute of MIT and Harvard, Cambridge, Massachusetts, USA
+mit-eecs	Department of Electrical Engineering and Computer Science, Massachusetts Institute of Technology, Cambridge, Massachusetts, USA
+harvard-oeb	Center for Systems Biology, Department of Organismic and Evolutionary Biology, Harvard University, Cambridge, Massachusetts, USA
+harvard-chan	Department of Immunology and Infectious Diseases, Harvard T.H. Chan School of Public Health, Harvard University, Boston, Massachusetts, USA
+hhmi	Howard Hughes Medical Institute, Chevy Chase, Maryland, USA

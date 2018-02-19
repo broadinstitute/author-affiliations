@@ -1,0 +1,7 @@
+Person1 LastName	broad,mit-eecs
+Person2 LastName	broad
+Person3 LastName	broad,harvard-oeb
+Person4 LastName	broad,harvard-oeb,harvard-chan
+Person5 LastName	broad,harvard-oeb
+Person6 LastName	broad,harvard-chan
+Person7 LastName	broad,harvard-oeb,harvard-chan,hhmi
