@@ -74,29 +74,59 @@ def main(args):
     affiliations_ordered = sorted(list(affiliations.keys()),
         key=lambda x: affiliations_number[x])
 
-    # Generate HTML of authors with their affiliations numbered
+    # Generate HTML and LaTeX of authors with their affiliations numbered
     author_html = ''
+    author_latex = ''
     for i, author in enumerate(authors):
         numbers = [affiliations_number[x] for x in authors[author]]
         numbers_str = ','.join([str(x) for x in sorted(numbers)])
         if i > 0:
             author_html += ', '
+            author_latex += ',\n'
+
         author_html += author + '<sup>' + numbers_str + '</sup>'
 
-    # Generate HTML of affiliations with their full names
+        # For LaTeX, put an mbox around the last name and another around
+        # everything before the last name, so that neither of these two
+        # pieces are split with a line break
+        author_split = author.split(' ')
+        author_mbox = ('\mbox{' + ' '.join(author_split[:-1]) + '} ' +
+            '\mbox{' + author_split[-1] + '}')
+        author_latex += author_mbox + '$^{' + numbers_str + '}$'
+    author_latex += '\n'
+
+    # Generate HTML and LaTeX of affiliations with their full names
     affiliations_html = ''
+    affiliations_latex = ''
     for i, affiliation in enumerate(affiliations_ordered):
         number = str(affiliations_number[affiliation])
         fullname = affiliations[affiliation]
         if i > 0:
             affiliations_html += ' '
+
         affiliations_html += '<sup>' + number + '</sup>' + fullname + '.'
+        affiliations_latex += '$^{' + number + '}$' + fullname + '.\n'
 
     # Write HTML
-    with open(args.out, 'w') as f:
+    with open(args.out_html, 'w') as f:
         f.write(author_html)
         f.write('<br><br>')
         f.write(affiliations_html)
+
+    # Write LaTeX if desired
+    if args.out_latex:
+        with open(args.out_latex, 'w') as f:
+            f.write('%%%%%%%%%%%%%%%%%%%%%\n')
+            f.write('%% LIST OF AUTHORS %%\n')
+            f.write('%%%%%%%%%%%%%%%%%%%%%\n')
+            f.write(author_latex)
+            f.write('%%%%%%%%%%%%%%%%%%%%%\n')
+            f.write('\n\n')
+            f.write('%%%%%%%%%%%%%%%%%%%%%%%%%%\n')
+            f.write('%% LIST OF AFFILIATIONS %%\n')
+            f.write('%%%%%%%%%%%%%%%%%%%%%%%%%%\n')
+            f.write(affiliations_latex)
+            f.write('%%%%%%%%%%%%%%%%%%%%%%%%%%\n')
 
 
 if __name__ == '__main__':
@@ -111,8 +141,11 @@ if __name__ == '__main__':
               "and there are 2 columns: column 1 gives a shorthand for an "
               "affiliation and column 2 gives the full name of the "
               "affiliation"))
-    parser.add_argument('out',
+    parser.add_argument('out_html',
         help=("Path to output HTML file that gives an author list with "
+              "numbered affiliations"))
+    parser.add_argument('--out-latex',
+        help=("Path to output tex file that gives an author list with "
               "numbered affiliations"))
 
     args = parser.parse_args()
